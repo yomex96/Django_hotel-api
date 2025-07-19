@@ -1,10 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Booking
-from .serializers import BookingSerializer
+from .models import Booking, Review
+from .serializers import BookingSerializer, ReviewSerializer
 
-from .serializers import ReviewSerializer
+
 
 @api_view(['GET', 'POST'])
 def booking_list(request):

@@ -28,14 +28,15 @@ class Booking(models.Model):
     
     
     
-class Review(models.Model):  # <== Make sure this class is here and not commented out or indented
+class Review(models.Model):
+    booking = models.ForeignKey('Booking', on_delete=models.CASCADE, related_name='reviews')
     guest_name = models.CharField(max_length=100)
     room_type = models.CharField(max_length=20, choices=[
         ('standard', 'Standard'),
         ('deluxe', 'Deluxe'),
         ('suite', 'Suite'),
     ])
-    rating = models.PositiveIntegerField()
+    rating = models.PositiveIntegerField()  # 1 to 5
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
