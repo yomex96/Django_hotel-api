@@ -39,7 +39,34 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'bookings',
+    'rest_framework.authtoken',
+    'drf_spectacular',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,  
+    
+}
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Hotel Booking API',
+    'VERSION': '1.0.0',
+    # Customize Swagger UI settings if needed:
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
