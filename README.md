@@ -22,7 +22,7 @@ The Hotel Booking API is a RESTful service built with Django & Django REST Frame
 
 2. View Bookings: Retrieve all bookings (admin) or user-specific bookings.
 
-3. nUpdate Booking: Modify booking details (e.g., dates, room type).
+3. Update Booking: Modify booking details (e.g., dates, room type).
 
 4. Cancel Booking: Delete or mark a booking as cancelled.
 
@@ -32,8 +32,8 @@ The Hotel Booking API is a RESTful service built with Django & Django REST Frame
 
 ## 🗂️ Booking Data Structure
 
-1. Field	Type	Description
-2. id	AutoField	Unique booking identifier
+1. Field 	Type Description
+2. id	 AutoField	Unique booking identifier
 3. guest_name	String	Name of the guest
 4. email	EmailField	Guest email
 5. phone	CharField	Guest phone number
