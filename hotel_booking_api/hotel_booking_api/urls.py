@@ -27,6 +27,10 @@ urlpatterns = [
         # OpenAPI schema JSON
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
 
+
+    path('api/accounts/', include('accounts.urls')),
+
+
     # Swagger UI
     path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
 

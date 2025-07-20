@@ -4,6 +4,22 @@ from rest_framework import status
 from .models import Booking, Review
 from .serializers import BookingSerializer, ReviewSerializer
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics
+
+from rest_framework.permissions import IsAuthenticated
+from .permissions import IsAdminOrReadOnly
+
+from rest_framework.permissions import AllowAny
+
+from rest_framework.permissions import AllowAny
+
+
+
+from .utils import send_review_notification
+
+
+
 
 
 @api_view(['GET', 'POST'])
@@ -12,6 +28,7 @@ def booking_list(request):
         bookings = Booking.objects.all()
         serializer = BookingSerializer(bookings, many=True)
         return Response(serializer.data)
+        
 
     elif request.method == 'POST':
         serializer = BookingSerializer(data=request.data)
@@ -46,19 +63,37 @@ def booking_detail(request, pk):
 
 
 
-@api_view(['GET', 'POST'])
-def review_list(request):
-    if request.method == 'GET':
-        reviews = Review.objects.all()
-        serializer = ReviewSerializer(reviews, many=True)
-        return Response(serializer.data)
+# @api_view(['GET', 'POST'])
+# def review_list(request):
+#     if request.method == 'GET':
+#         reviews = Review.objects.all()
+#         serializer = ReviewSerializer(reviews, many=True)
+#         return Response(serializer.data)
 
-    elif request.method == 'POST':
-        serializer = ReviewSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#     elif request.method == 'POST':
+#         serializer = ReviewSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class ReviewList(generics.ListCreateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [AllowAny]  
+
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['booking', 'rating', 'room_type']
+
+    def perform_create(self, serializer):
+        review = serializer.save()
+        # send_review_notification(review)
+    
+
+
+
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -82,3 +117,9 @@ def review_detail(request, pk):
     elif request.method == 'DELETE':
         review.delete()
         return Response({'message': 'Review deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    
+
+class ReviewDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    permission_classes = [IsAdminOrReadOnly]
